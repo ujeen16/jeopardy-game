@@ -1,0 +1,175 @@
+# Eugene Ayotte
+from random import randrange
+
+#defining attributes: for a specific jeopardy question
+class questions:
+    def __init__(self, topic, point_value, question, answer):
+        self.topic = topic
+        self.point_value = point_value
+        self.question = question
+        self.answer = answer
+
+#doesnt work outside of function Jeopardy
+
+def jeopardy():
+
+    #holds class strings
+    jeopardy_questions=[]
+    #holds already used questions for no repeats
+    questions_used = []
+
+    #starting point tally
+    total_points = 0
+
+
+    def daily_double(total_points):
+
+        #z ends the statement when a new question is found
+        z=0
+        while z ==0:
+            myrandom = randrange(0, 24)
+            if questions_used.count(myrandom) == 1:
+                z=0
+            elif questions_used.count(myrandom) == 0:
+                random_question = jeopardy_questions[myrandom]
+                questions_used.append(myrandom)
+                z = 1
+                if total_points > 1000:
+                    print("this is a daily double, you may wager all positive points you have but not more")
+                    print("if you answer correctly you double those points, however if you answer wrong you will lose all of them")
+                    print("your currently have ", total_points, "to wager")
+                    mywager = int(input("how many points of your points would you like to wager: "))
+                    if mywager >total_points:
+                        mywager = total_points
+                    elif mywager < 0:
+                        mywager = 0
+                    #the question
+                    print(random_question.topic, random_question.point_value)
+                    print(random_question.question)
+                    player_answer = input("please enter your answer here: ")
+                    #assigning points
+                    if player_answer == random_question.answer:
+                        print("correct!")
+                        total_points = total_points + mywager
+                        return total_points
+                    else:
+                        total_points = total_points - mywager
+                        print("wrong answer, the correct answer was: ", random_question.answer)
+                        return total_points
+                #points less than 1000
+                else:
+                    print("you have hit a daily double, you may wager up to 1000 points if you are correct you gain those points if you are wrong, you lose them")
+                    mywager = int(input("how many points would you like to wager: "))
+                    if mywager>1000:
+                        mywager = 0
+                    elif mywager<0:
+                        mywager = 0
+                    print(random_question.topic, random_question.point_value)
+                    print(random_question.question)
+                    player_answer = input("please enter your answer here: ")
+                    # assigning points
+                    if player_answer == random_question.answer:
+                        print("correct!")
+                        total_points = total_points + mywager
+                        return total_points
+                    else:
+                        total_points = total_points - mywager
+                        print("wrong answer, the correct answer was: ", random_question.answer)
+                        return total_points
+
+
+
+    def basic_game(total_points):
+
+        print("")
+        print("these are the questions already used", questions_used)
+        category_choice = int(input("Choose your category:"))
+        #using append to hinder redundent question choices
+        if questions_used.count(category_choice) == 1:
+            print("question", category_choice, "has already been used try another question")
+            return total_points
+        elif questions_used.count(category_choice) == 0:
+            questions_used.append(category_choice)
+            question8 = jeopardy_questions[category_choice]
+            print(question8.topic, question8.point_value)
+            print(question8.question)
+            #decide if player answers correctly and add points or subtract points
+            player_answer = input("please enter your answer here: ")
+            if player_answer == question8.answer:
+                print("correct!")
+                total_points = total_points + question8.point_value
+                return total_points
+            else:
+                total_points = total_points - question8.point_value
+                print("wrong answer, the correct answer was: ", question8.answer)
+                return total_points
+
+
+    #the categories and values
+    jeopardy_questions.append(questions("famous quotes", 200, "His tearful '62 prediction This is my last press conference' didn't prove true", "whatisrichardnixon"))
+    jeopardy_questions.append(questions("famous quotes", 400, "German who inspired the Russians to revolt by urging 'Workers of the world, unite'", "whatiskarlmarx"))
+    jeopardy_questions.append(questions("famous quotes", 600, "The rattlesnake's warning on Revolutionary War flags", "whatisdonttreadonme"))
+    jeopardy_questions.append(questions("famous quotes", 800, "Truman said it's a recession when your neighbor loses his job, but this is a depression", "whatiswhenyouloseyourjob"))
+    jeopardy_questions.append(questions("famous quotes", 1000, "Ironically, Lincoln said this 'is stronger than the bullet'", "whatistheballet"))
+
+    jeopardy_questions.append(questions("USCapitals", 200, "What is the capital of Ohio?", "whatiscolumbus"))
+    jeopardy_questions.append(questions("USCapitals", 400, "What is the capital of Maine?", "whatisaugusta"))
+    jeopardy_questions.append(questions("USCapitals", 600, "What is the capital of Virginia?", "whatisrichmond"))
+    jeopardy_questions.append(questions("USCapitals", 800, "What is the capital of Florida?", "whatistallahassee"))
+    jeopardy_questions.append(questions("USCapitals", 1000, "What is the capital of Idaho?", "whatisboise"))
+
+    jeopardy_questions.append(questions("Destination: Earth", 200,"The hardest substances in nature are wurtzite boron nitride & lonsdaleite; this gem is actually third", "whatisdiamond"))
+    jeopardy_questions.append(questions("Destination: Earth", 400, "Despite their name, spring these, caused by alignment of the Sun, Moon & Earth, happen in the ocean in every season", "whatistides"))
+    jeopardy_questions.append(questions("Destination: Earth", 600, "On the Earth's surface, it's 24,901 miles long", "whatistheequator"))
+    jeopardy_questions.append(questions("Destination: Earth", 800, "The 4 types of these waves are primary, secondary, Rayleigh & Love", "whatisseismicwaves"))
+    jeopardy_questions.append(questions("Destination: Earth", 1000, "The axial this of the Earth is 23.5 degrees", "whatistilt"))
+
+    jeopardy_questions.append(questions("Animal Facts", 200,"How many hearts does an octopus have?", "whatis3"))
+    jeopardy_questions.append(questions("Animal Facts", 400, "What is a rhinoceros horn made out of?", "whatishair"))
+    jeopardy_questions.append(questions("Animal Facts", 600, "What is the loudest animal in the world?", "whatisawhale"))
+    jeopardy_questions.append(questions("Animal Facts", 800, "How many noses does a Slug have?", "whatis4"))
+    jeopardy_questions.append(questions("Animal Facts", 1000, "Where is a shrimps heart located", "whatishead"))
+
+    jeopardy_questions.append(questions("September", 200, "September's birthstone is this precious gem that's a variety of corundum", "whatissapphire"))
+    jeopardy_questions.append(questions("September", 400, "The third Saturday in September is the start of this German festival first observed in 1810 to celebrate a royal wedding; cheers!", "whatisoktoberfest"))
+    jeopardy_questions.append(questions("September", 600, "September is the heritage month for this style of music that rose to new heights in the Black church", "whatisgospelmusic"))
+    jeopardy_questions.append(questions("September", 800, "In 2019 Sept. 8-14 is the national week for this type of facility housing seniors who need help but not full-time nursing care", "whatisassistedlivingcenters"))
+    jeopardy_questions.append(questions("September", 1000, "These heavenly occurrences due in September 2019 include the Southern Taurids", "whatisameteorshower"))
+
+    #intro to understanding the game
+    print("welcome to a friendly game of jeopardy!")
+    print("categories begin at 200pts and go up by 200 points ranging from 200-1000")
+    print("Famous quotes:0-4, US Capitals:5-9, Destination Earth: 10-14, Animal Facts: 15-19, September: 20-24")
+    print("example 0:200pts, 1:400pts, 2:600pts, 3:800pts, 4:1000pts")
+    print("for all answers type in lowercase letters with no spaces and begin with 'whatis'")
+    print("if you answer a question correctly you earn the points, answer incorrectly lose the points")
+
+
+    #implementing different portions of the game
+    for i in range(10):
+        total_points = basic_game(total_points)
+        print("your total points are ", total_points)
+
+    total_points = daily_double(total_points)
+    print("your total points are ", total_points)
+
+    for i in range(6):
+        total_points = basic_game(total_points)
+        print("your total_points are ", total_points)
+
+    total_points = daily_double(total_points)
+    print("your total points are ", total_points)
+
+    for i in range(7):
+        total_points = basic_game(total_points)
+        print("your total_points are ", total_points)
+
+    print("end of game your final score is: ", total_points)
+
+
+
+jeopardy()
+
+
+
+
